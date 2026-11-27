@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "flag_id": 1,
+    "env_id": 3,
+    "action": "publish",
+    "detail": "v2 生产 20% + 内部体验",
+    "actor": "writer",
+    "created_at": 1700200000.0
+  },
+  {
+    "id": 2,
+    "flag_id": 4,
+    "env_id": 3,
+    "action": "kill",
+    "detail": "深色导航线上报障紧急熔断",
+    "actor": "admin",
+    "created_at": 1700250000.0
+  },
+  {
+    "id": 3,
+    "flag_id": 1,
+    "env_id": 3,
+    "action": "override",
+    "detail": "u-9999 -> force_on",
+    "actor": "writer",
+    "created_at": 1700210000.0
+  },
+  {
+    "id": 4,
+    "flag_id": 2,
+    "env_id": 2,
+    "action": "schedule_step",
+    "detail": "推进到 10%",
+    "actor": "admin",
+    "created_at": 1700145000.0
+  },
+  {
+    "id": 5,
+    "flag_id": 5,
+    "env_id": null,
+    "action": "create_flag",
+    "detail": "登记开关 notify.batch_push",
+    "actor": "admin",
+    "created_at": 1700004000.0
+  }
+]

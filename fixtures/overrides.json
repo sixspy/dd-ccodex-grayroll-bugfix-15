@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "flag_id": 1,
+    "env_id": 3,
+    "subject_key": "u-9999",
+    "effect": "force_on",
+    "note": "值班强制开",
+    "active": 1,
+    "updated_at": 1700210000.0
+  },
+  {
+    "id": 2,
+    "flag_id": 2,
+    "env_id": 2,
+    "subject_key": "u-8888",
+    "effect": "force_off",
+    "note": "问题账号关闭",
+    "active": 1,
+    "updated_at": 1700160000.0
+  }
+]

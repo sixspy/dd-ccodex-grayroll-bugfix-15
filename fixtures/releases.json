@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "flag_id": 1,
+    "env_id": 3,
+    "version": 2,
+    "summary": "生产 20% + 内部体验",
+    "status": "published",
+    "official": 1,
+    "published_at": 1700200000.0,
+    "published_by": "writer"
+  },
+  {
+    "id": 2,
+    "flag_id": 2,
+    "env_id": 2,
+    "version": 1,
+    "summary": "预发五成灰度",
+    "status": "published",
+    "official": 1,
+    "published_at": 1700150000.0,
+    "published_by": "admin"
+  }
+]

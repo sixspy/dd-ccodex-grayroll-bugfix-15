@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "flag_id": 1,
+    "env_id": 1,
+    "kind": "percent",
+    "percent": 100,
+    "cohort_id": null,
+    "version": 1,
+    "official": 1,
+    "updated_at": 1700100000.0
+  },
+  {
+    "id": 2,
+    "flag_id": 1,
+    "env_id": 3,
+    "kind": "percent_and_cohort",
+    "percent": 20,
+    "cohort_id": 1,
+    "version": 2,
+    "official": 1,
+    "updated_at": 1700200000.0
+  },
+  {
+    "id": 3,
+    "flag_id": 2,
+    "env_id": 2,
+    "kind": "percent",
+    "percent": 50,
+    "cohort_id": null,
+    "version": 1,
+    "official": 1,
+    "updated_at": 1700150000.0
+  },
+  {
+    "id": 4,
+    "flag_id": 4,
+    "env_id": 3,
+    "kind": "percent",
+    "percent": 0,
+    "cohort_id": null,
+    "version": 3,
+    "official": 1,
+    "updated_at": 1700250000.0
+  }
+]

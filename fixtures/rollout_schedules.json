@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "flag_id": 2,
+    "env_id": 2,
+    "steps_json": "[{\"percent\":10,\"after_hours\":0},{\"percent\":50,\"after_hours\":12}]",
+    "cursor_step": 1,
+    "status": "running",
+    "note": "向量召回预发爬坡中",
+    "created_at": 1700140000.0,
+    "created_by": "admin"
+  }
+]

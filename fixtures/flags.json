@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "key": "checkout.new_pay",
+    "title": "新支付链路",
+    "description": "收银台新支付组件灰度",
+    "owner": "writer",
+    "status": "active",
+    "created_at": 1700000000.0
+  },
+  {
+    "id": 2,
+    "key": "search.vector_recall",
+    "title": "向量召回",
+    "description": "搜索向量召回旁路",
+    "owner": "admin",
+    "status": "active",
+    "created_at": 1700001000.0
+  },
+  {
+    "id": 3,
+    "key": "feed.ranking_v2",
+    "title": "信息流排序 v2",
+    "description": "排序模型切换",
+    "owner": "writer",
+    "status": "draft",
+    "created_at": 1700002000.0
+  },
+  {
+    "id": 4,
+    "key": "ui.dark_nav",
+    "title": "深色导航",
+    "description": "导航栏深色主题",
+    "owner": "writer",
+    "status": "killed",
+    "created_at": 1700003000.0
+  },
+  {
+    "id": 5,
+    "key": "notify.batch_push",
+    "title": "批量推送",
+    "description": "通知批量通道",
+    "owner": "admin",
+    "status": "draft",
+    "created_at": 1700004000.0
+  }
+]
