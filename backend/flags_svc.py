@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from audit_svc import write_audit, write_history
 from auth import current_user, require_writer
 from db import connect
+from locks import acquire, release
 from models import FLAG_STATUS_LABEL
 from validators import require_flag_key, require_str
 
@@ -69,23 +70,34 @@ def create_flag(body: FlagIn, authorization: str | None = Header(default=None)):
 
 @router.post("/{flag_id}/archive")
 def archive_flag(flag_id: int, authorization: str | None = Header(default=None)):
+    """吊销（甲路径封死）：同事务真实置 status='archived'，与比例编辑互斥。
+
+    吊销后：比例正式零增拒写（规则服务联检），命中正式零增（求值服务联检）。
+    """
     user = current_user(authorization)
     require_writer(user)
+    key = f"flag-revoke:{flag_id}"
     with connect() as conn:
-        row = conn.execute("SELECT * FROM flags WHERE id=?", (flag_id,)).fetchone()
-        if not row:
-            raise HTTPException(404, detail="开关不存在")
-        if row["status"] == "archived":
-            raise HTTPException(400, detail="已归档")
-        # BUGFIX-15 埋雷：软删除只改 description 标记，status 仍 active，规则/求值仍通
-        conn.execute(
-            "UPDATE flags SET description=? WHERE id=?",
-            ((row["description"] or "") + "|soft_deleted=1", flag_id),
-        )
-        write_history(conn, user["username"], "soft_delete", f"软删标记 {row['key']}", flag_id=flag_id)
-        write_audit(conn, user["username"], "soft_delete", "flag", flag_id, row["key"])
-        conn.commit()
-    return {"id": flag_id, "status": row["status"], "soft_deleted": True}
+        # 争用段：与在途比例编辑互斥，败方只记争用痕（contention_marks）
+        acquire(conn, key, user["username"])
+        try:
+            row = conn.execute("SELECT * FROM flags WHERE id=?", (flag_id,)).fetchone()
+            if not row:
+                raise HTTPException(404, detail="开关不存在")
+            if row["status"] == "archived":
+                raise HTTPException(400, detail="已吊销，不可重复吊销")
+            # 取舍段：吊销是真实状态迁移，不再只改 description 标记
+            conn.execute(
+                "UPDATE flags SET status='archived', description=? WHERE id=?",
+                ((row["description"] or "") + "|soft_deleted=1", flag_id),
+            )
+            write_history(conn, user["username"], "soft_delete", f"吊销 {row['key']}", flag_id=flag_id)
+            write_audit(conn, user["username"], "soft_delete", "flag", flag_id, row["key"])
+            conn.commit()
+            return {"id": flag_id, "status": "archived", "soft_deleted": True}
+        finally:
+            release(conn, key, user["username"])
+            conn.commit()
 
 
 @router.post("/{flag_id}/soft-delete")

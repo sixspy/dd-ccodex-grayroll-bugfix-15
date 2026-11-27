@@ -39,17 +39,16 @@ def evaluate(body: EvalIn, authorization: str | None = Header(default=None)):
                 "env_code": env_code,
                 "subject_key": subject,
             }
-        # BUGFIX-15 埋雷：不拦 soft_deleted / archived 求值
-        if False and fl["status"] == "archived":
+        # 吊销联检（甲路径封死）：已吊销命中正式零增，覆盖也不得救活
+        if fl["status"] == "archived":
             return {
                 "enabled": False,
-                "reason": "flag_archived",
+                "reason": "flag_revoked",
+                "flag_status": fl["status"],
                 "flag_key": flag_key,
                 "env_code": env_code,
                 "subject_key": subject,
             }
-        if "soft_deleted=1" in (fl["description"] or ""):
-            pass  # 故意继续命中
         ov = conn.execute(
             "SELECT * FROM overrides WHERE flag_id=? AND env_id=? AND subject_key=? AND active=1",
             (fl["id"], env["id"], subject),
@@ -64,10 +63,24 @@ def evaluate(body: EvalIn, authorization: str | None = Header(default=None)):
                 "subject_key": subject,
                 "version": None,
             }
+        # 吊销标记与比例联查：同事务跨表一读，账实相符
         rule = conn.execute(
-            "SELECT * FROM flag_rules WHERE flag_id=? AND env_id=? AND official=1",
+            """
+            SELECT r.*, f.status AS flag_status
+            FROM flag_rules r JOIN flags f ON f.id=r.flag_id
+            WHERE r.flag_id=? AND r.env_id=? AND r.official=1
+            """,
             (fl["id"], env["id"]),
         ).fetchone()
+        if rule and rule["flag_status"] == "archived":
+            return {
+                "enabled": False,
+                "reason": "flag_revoked",
+                "flag_status": rule["flag_status"],
+                "flag_key": flag_key,
+                "env_code": env_code,
+                "subject_key": subject,
+            }
         if not rule:
             return {
                 "enabled": False,

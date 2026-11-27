@@ -29,7 +29,7 @@ export const RulesView = {
   <div class="grid">
     <div class="panel span-5">
       <h2>影子绑定（乙）</h2>
-      <p class="hint">只写影子草案，正式规则升正前零改。</p>
+      <p class="hint">只写影子草案，正式规则升正前零改。已吊销开关的比例写入（含影子草案与升正）一律拒写（甲路径口径）。</p>
       <div class="field"><label>开关ID</label><input type="number" v-model.number="form.flag_id" /></div>
       <div class="field"><label>环境ID</label><input type="number" v-model.number="form.env_id" /></div>
       <div class="field"><label>类型</label>
@@ -42,10 +42,11 @@ export const RulesView = {
     </div>
     <div class="panel span-7">
       <h2>正式规则</h2>
-      <table><thead><tr><th>开关</th><th>环境</th><th>类型</th><th>%</th><th>版本</th></tr></thead>
+      <table><thead><tr><th>开关</th><th>环境</th><th>类型</th><th>%</th><th>版本</th><th>开关状态</th></tr></thead>
       <tbody>
         <tr v-for="r in official" :key="r.id">
           <td>{{ r.flag_key }}</td><td>{{ r.env_code }}</td><td>{{ r.kind }}</td><td>{{ r.percent }}</td><td>v{{ r.version }}</td>
+          <td><span class="pill" :class="{'danger': r.flag_status==='archived' || r.flag_status==='killed'}">{{ r.flag_status }}</span></td>
         </tr>
       </tbody></table>
       <h2 style="margin-top:1rem">影子草案</h2>

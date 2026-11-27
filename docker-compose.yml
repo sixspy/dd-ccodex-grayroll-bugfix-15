@@ -1,9 +1,10 @@
-name: grayroll
+name: grayroll-bugfix-15
+
 services:
   app:
     build: .
     ports:
-      - "11720:8000"
+      - "11840:8000"
     volumes:
       - ./data:/app/data
     healthcheck:

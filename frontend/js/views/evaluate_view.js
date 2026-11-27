@@ -24,15 +24,19 @@ export const EvaluateView = {
       <div class="field"><label>主体键</label><input v-model="form.subject_key" /></div>
       <button class="btn" @click="run">求值</button>
       <div class="err" v-if="err">{{ err }}</div>
+      <p v-if="result && result.reason==='flag_revoked'" class="hint" style="border-left-color:var(--danger);color:var(--danger)">
+        开关已吊销，命中拒放（enabled=false）。
+      </p>
       <pre v-if="result" style="margin-top:0.8rem">{{ result }}</pre>
     </div>
     <div class="panel span-7">
       <h2>正式规则板</h2>
       <table v-if="board">
-        <thead><tr><th>开关</th><th>环境</th><th>类型</th><th>%</th><th>版本</th></tr></thead>
+        <thead><tr><th>开关</th><th>环境</th><th>类型</th><th>%</th><th>版本</th><th>状态</th></tr></thead>
         <tbody>
           <tr v-for="(r,i) in board.rules" :key="i">
             <td>{{ r.flag_key }}</td><td>{{ r.env_code }}</td><td>{{ r.kind }}</td><td>{{ r.percent }}</td><td>v{{ r.version }}</td>
+            <td><span class="pill" :class="{'danger': r.status==='archived' || r.status==='killed'}">{{ r.status }}</span></td>
           </tr>
         </tbody>
       </table>
